@@ -2,13 +2,13 @@
 
 using namespace std;
 
-struct element
+struct element			// one element of list
 {
 	int value;
 	element* link;
 };
 
-void add_element(int value, element* root)
+void add_element(int value, element* root)		/// add element
 {
 	element* temp = root;
 	while(temp -> link != NULL)
@@ -64,35 +64,6 @@ void del_element(int number, element* root)	///////////////////////// deleting e
 	}
 }
 
-void sort_list(element* root)		////////////////////// sorting list
-{
-    element * p = NULL;
-    element * temp = NULL;
-    
-    if(root -> link == NULL || root -> link -> link == NULL) return;
-	
-    while (root -> link -> link != NULL) 
-	{
-		p = root -> link -> link;
-        do 
-		{
-            if (root -> link -> value > p -> value)
-			{
-                temp = root -> link;
-				root -> link -> link = p -> link;
-				root -> link = p;
-				p -> link = temp;
-				p = p -> link -> link;
-            } else
-			{
-				p = p -> link;
-			};
-            
-        } while (p != NULL);   
-    	root = root -> link;
-    }
-
-}
 
 void print_list(element* root)			////////////////// print each element
 {
@@ -106,12 +77,14 @@ void print_list(element* root)			////////////////// print each element
 	cout << temp -> value << '\n';
 }
 
-element* merge(element* root1, element* root2)
+
+
+element* merge(element* root1, element* root2)			// merging two sorted lists into one
 {
-	element* cur_item;
-	element* p1;
-	element* p2;
-	element* ans;
+	element* cur_item = NULL;
+	element* p1 = NULL;
+	element* p2 = NULL;
+	element* ans = NULL;
 	p1 = root1;
 	p2 = root2;
 	if(p1->value <= p2 -> value)
@@ -145,19 +118,20 @@ element* merge(element* root1, element* root2)
 	{
 		cur_item -> link = p2;
 	};
+	return ans;
 }
 
-struct element_of_stack
+struct element_of_stack		// element of stack consider pointer to element of list and number of elements connected with this pointer
 {
 	int level;
 	element* item;
 };
 
-void qsort_list(element* root)			//////////////////// sort for 
+void qsort_list(element* root)			//////////////////// sort list
 {
 	if(root -> link == NULL) return;
 	
-	element_of_stack stack[32];
+	element_of_stack stack[64];
 	int stack_pos = 0;
 	element* p = root;
 	while(p != NULL)
@@ -185,13 +159,12 @@ void qsort_list(element* root)			//////////////////// sort for
 	{
 		root = stack[0].item;
 	}
-	
 }
 
 int main()
 {
-	element root;
-	root.value = 0;
+	element root; 			// root.link - is a pointer to the first element. dont ask why the hole element is a pointer.  
+	root.value = 0; 
 	root.link = NULL;
 	
 	add_element(1100, &root);
@@ -203,10 +176,15 @@ int main()
 	add_element(120, &root);
 	add_element(190, &root);
 	add_element(6, &root);
-	sort_list(&root);
-//	qsort_list(&root);
+	add_element(6, &root);
+	add_element(105, &root);
+	
+
+	qsort_list(&root);
+
+	get_element(7, root);
 	
 	print_list(&root);
-
+	
 	return 0;
 }
